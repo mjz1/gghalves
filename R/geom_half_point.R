@@ -137,16 +137,41 @@ GeomHalfPoint <- ggproto(
     #     ggplot2::resolution(data$point_y[[1]], zero = FALSE) * 0.4
     # }
 
-    if (is(transformation, "PositionIdentity") || is(transformation, "PositionJitter")) {
-      trans_positions <- transformation$compute_layer(
-        transformation_df,
-        transformation_params_new
-      )
+    needs_layout <- "layout" %in% names(formals(transformation$compute_layer))
+    needs_scales <- "scales" %in% names(formals(transformation$compute_panel))
+
+    # Practical test if ggplot2 is at version 4.x.x+
+    ggplot2_version_400 <- "class_ggplot" %in% getNamespaceExports("ggplot2")
+
+    if (
+      is(transformation, "PositionIdentity") ||
+      (is(transformation, "PositionJitter") && !ggplot2_version_400)
+    ) {
+      if (needs_layout) {
+        trans_positions <- transformation$compute_layer(
+          transformation_df,
+          transformation_params_new,
+          layout = list(get_scales = function(...) NULL)
+        )
+      } else {
+        trans_positions <- transformation$compute_layer(
+          transformation_df,
+          transformation_params_new
+        )
+      }
     } else {
-      trans_positions <- transformation$compute_panel(
-        transformation_df,
-        transformation_params_new
-      )
+      if (needs_scales) {
+        trans_positions <- transformation$compute_panel(
+          transformation_df,
+          transformation_params_new,
+          scales = NULL
+        )
+      } else {
+        trans_positions <- transformation$compute_panel(
+          transformation_df,
+          transformation_params_new
+        )
+      }
     }
 
     # if (length(unique(trans_positions$x)) > 1L) {

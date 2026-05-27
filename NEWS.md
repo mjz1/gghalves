@@ -1,3 +1,9 @@
+# gghalves 0.1.5
+## Bug Fixes
+- Fixed compatibility with `ggplot2` version 4.0.0+ by avoiding direct
+  `compute_layer()` call on `PositionJitter` (which gained an incompatible
+  `layout` argument). Falls back to `compute_panel()` on ggplot2 4.x.
+
 # gghalves 0.1.4
 ## Bug Fixes
 - fixed compatibility of `geom_half_boxplot()` with `ggplot2` version 3.4.
