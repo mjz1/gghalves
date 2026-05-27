@@ -3,7 +3,6 @@
 %   R/geom_half_point.R, R/geom_half_point_panel.R, R/geom_half_violin.R,
 %   R/stat-half-bindot.R, R/stat-half-point.R, R/stat-half-ydensity.R,
 %   R/ggproto-classes.R
-\docType{data}
 \name{GeomHalfDotplot}
 \alias{GeomHalfDotplot}
 \alias{GeomHalfBoxplot}
@@ -18,4 +17,3 @@
 \description{
 gghalves extensions to ggplot2
 }
-\keyword{datasets}
